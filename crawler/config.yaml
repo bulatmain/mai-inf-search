@@ -1,0 +1,23 @@
+db:
+  host: localhost
+  port: 27017
+  name: movie_reviews
+
+logic:
+  delay: 0.3
+  max_pages: 40000
+  threads: 8
+
+sources:
+  - name: screenrant
+    url: https://screenrant.com
+    categories:
+      - https://screenrant.com/movies/
+      - https://screenrant.com/movie-reviews/
+      - https://screenrant.com/movie-news/
+  - name: collider
+    url: https://collider.com
+    categories:
+      - https://collider.com/movies/
+      - https://collider.com/movie-reviews/
+      - https://collider.com/movie-news/

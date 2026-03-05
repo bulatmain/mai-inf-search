@@ -1,0 +1,6 @@
+newspaper3k
+pymongo
+requests
+pyyaml
+beautifulsoup4
+lxml

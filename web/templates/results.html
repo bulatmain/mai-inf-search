@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ query }} - Movie Search</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa; color: #1a1a2e;
+        }
+        .header {
+            background: white; padding: 16px 24px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .header a { text-decoration: none; font-size: 1.3rem; font-weight: 700; color: #4a69bd; }
+        .header form { display: flex; gap: 8px; flex: 1; }
+        .header input {
+            flex: 1; padding: 8px 12px; font-size: 0.95rem;
+            border: 2px solid #ddd; border-radius: 6px; outline: none;
+        }
+        .header input:focus { border-color: #4a69bd; }
+        .header button {
+            padding: 8px 16px; background: #4a69bd; color: white;
+            border: none; border-radius: 6px; cursor: pointer; font-weight: 600;
+        }
+        .content { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .stats { color: #666; margin-bottom: 16px; font-size: 0.9rem; }
+        .result { margin-bottom: 20px; }
+        .result-title {
+            font-size: 1.1rem; margin-bottom: 2px;
+        }
+        .result-title a {
+            color: #1a0dab; text-decoration: none;
+        }
+        .result-title a:hover { text-decoration: underline; }
+        .result-url {
+            color: #006621; font-size: 0.85rem; word-break: break-all;
+        }
+        .pagination {
+            margin-top: 24px; display: flex; gap: 8px;
+        }
+        .pagination a {
+            padding: 8px 16px; background: #4a69bd; color: white;
+            border-radius: 6px; text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">Movie Search</a>
+        <form action="/search" method="get">
+            <input type="text" name="q" value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="content">
+        <p class="stats">
+            Found {{ total }} results for <strong>{{ query }}</strong>
+            ({{ "%.2f"|format(time_ms) }} ms)
+        </p>
+
+        {% for r in results %}
+        <div class="result">
+            <div class="result-title">
+                <a href="{{ r.url }}" target="_blank">{{ r.title if r.title else "Untitled" }}</a>
+            </div>
+            <div class="result-url">{{ r.url }}</div>
+        </div>
+        {% endfor %}
+
+        {% if results|length == 0 %}
+        <p>No results found.</p>
+        {% endif %}
+
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="/search?q={{ query }}&page={{ page - 1 }}">Previous</a>
+            {% endif %}
+            {% if has_next %}
+            <a href="/search?q={{ query }}&page={{ page + 1 }}">Next 50 results</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
